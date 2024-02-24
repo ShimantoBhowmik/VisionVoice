@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { VisionsyncComponent } from './visionsync/visionsync.component';
 import { StreamsyncComponent } from './streamsync/streamsync.component';
 import { HomeComponent } from './home/home.component';
+import { SyncComponent } from './sync/sync.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VisionsyncComponent,
     StreamsyncComponent,
-    HomeComponent
+    HomeComponent,
+    SyncComponent
   ],
   imports: [
     BrowserModule,

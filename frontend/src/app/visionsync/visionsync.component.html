@@ -1,1 +1,49 @@
-<p>visionsync works!</p>
+<div class="file-upload-container">
+    <div class="upload-box">
+      <div class="upload-icon">+</div>
+      <p>Drag and drop your video here</p>
+      <input type="file" class="choose-file-btn"Choose a file from your computer/>
+    </div>
+  
+    <div class="options">
+      <label class="switch">
+        <input type="checkbox" id="textualDescription">
+        <span class="slider round"></span>
+      </label>
+      <span>Textual Description</span>
+  
+      <label class="switch">
+        <input type="checkbox" id="audioDescription">
+        <span class="slider round"></span>
+      </label>
+      <span>Audio Description</span>
+  
+      <label class="switch">
+        <input type="checkbox" id="summarization">
+        <span class="slider round"></span>
+      </label>
+      <span>Summarization</span>
+    </div>
+  
+    <button class="generate-btn">Generate ⭐</button>
+  </div>
+  
+  <div class="sync">
+      <app-sync
+        timestamp="0:00"
+        description="A person extends their hand for a handshake."
+        audio="assets/handshake.mp3"
+      ></app-sync>
+    </div>
+  
+  <div class="video-recap-container">
+      <div class="recap-header">
+        <span class="recap-icon">⭐</span>
+        <h2>Quick Cuts: Video Recap</h2>
+      </div>
+      <p>
+        At the beginning, a black background displayed the title "American Express Unrated: The Big Machine." Distinct scenes followed in quick succession; an elegant woman held a white cat, a suited man engrossed in his phone, a woman savoring a glass of wine, and a blonde woman with a man in a white shirt. A couple walked a dog, a blue-makeup woman cuddled a teddy bear, and a woman strolled in a garden. The video then showed a bride in a hallway, a couple by a heart-drawn tree, a person with sunglasses lounging, a blonde woman with a man, a couple in a room, and a couple kissing in the dark. The scene shifted to a woman sitting with a deer, a woman gazing out a window, a man by a mirror, a man in a park, and a close-up of a painting. The clip ended with a woman eating an apple, a woman with a cat, a man pushing a car with a stuffed animal, a woman looking at a man, a woman in a red dress, two people walking, and finally, a clock face and tower on a black background.
+      </p>
+    </div>
+    
+  

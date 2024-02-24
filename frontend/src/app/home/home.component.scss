@@ -1,0 +1,144 @@
+.google-sign-in {
+    background-color: #4285F4;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 2px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .google-sign-in:hover {
+    background-color: #357ae8;
+  }
+
+  .content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .text-content {
+    flex: 1;
+  }
+  
+  .image-content {
+    flex: 1;
+    text-align: right;
+    object-position: 50% 10%;
+  }
+  
+  .content-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .offerings-section {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    
+  }
+  
+  .offerings-section h2 {
+    color: #000000;
+    font-size: 2.5em;
+  }
+  
+  .offerings-section p {
+    color: #666666;
+    font-size: 1em; 
+    margin: 10px 0 30px; 
+  }
+  
+  
+  .offerings-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+
+  }
+  
+  .offering {
+    text-align: center;
+    display: flex;  
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .icon {
+    display: block;
+    margin: 0;
+    font-size: 3em;
+    margin-bottom: 10px;
+  }
+  
+  .offering-text {
+    color: #333333;
+    align-items: center;
+    justify-content: left;
+    display: flex;
+    flex: 1;
+    font-size: 1em;
+  }
+  
+  
+  .image-section {
+    text-align: center;
+    padding: 20px;
+    width: 500px;
+  }
+  
+  .content-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .superior{
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+.team-section {
+    text-align: center;
+    padding: 40px;
+    
+  }
+  
+  .team-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+  }
+  
+  .team-members {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .team-member {
+    text-align: center;
+    max-width: 200px;
+  }
+  
+  .team-photo {
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid orange;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .team-name {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .team-role {
+    font-style: italic;
+    color: #555;
+  }

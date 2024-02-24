@@ -1,0 +1,29 @@
+.live {
+    margin-top: 1em;
+    max-width: 75%;
+    margin: auto;
+    position: relative;
+    p {
+      position: absolute;
+      background-color: red;
+      top: 1em;
+      border-radius: 40%;
+      left: 1em;
+      color: white;
+      padding: 0.25em 0.5em;
+      margin: 0;
+    }
+  
+    img {
+      margin: 0;
+      display: block;
+      margin: auto;
+      max-width: 100%;
+      border-radius: 25px;
+    }
+  }
+  
+  audio {
+    background-color: blue;
+  }
+  
