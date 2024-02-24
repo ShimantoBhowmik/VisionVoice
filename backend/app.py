@@ -35,3 +35,16 @@ async def add_process_time_header(request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     print(f"Processing time: {process_time}")
     return response
+
+async def save_file(file: UploadFile):
+    data = file.file.read()
+    file_hash = hashlib.sha256(data).hexdigest()
+    print(file_hash)
+    os.makedirs("./temp", exist_ok=True)
+    filename = f"./temp/{file_hash}{Path(file.filename).suffix}"
+    if os.path.exists(filename):
+        print("File already exists")
+        return filename
+    with open(filename, "wb") as f:
+        f.write(data)
+    return filename
