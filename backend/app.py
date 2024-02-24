@@ -1,11 +1,14 @@
+# app.py
 from fastapi import FastAPI, File, UploadFile
 from models import VideoToText, ImageToText, TextToSpeech, ScenesToText
 from io import BytesIO
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, Response
 import PIL
 import os
 import hashlib
+import soundfile as sf
 import json
+import base64
 from pathlib import Path
 
 app = FastAPI()
@@ -36,7 +39,7 @@ async def add_process_time_header(request, call_next):
     print(f"Processing time: {process_time}")
     return response
 
-#saving file video upload
+
 async def save_file(file: UploadFile):
     data = file.file.read()
     file_hash = hashlib.sha256(data).hexdigest()
@@ -49,6 +52,7 @@ async def save_file(file: UploadFile):
     with open(filename, "wb") as f:
         f.write(data)
     return filename
+
 
 # /video
 # Stream video to server
@@ -86,6 +90,27 @@ async def image_to_text(image: UploadFile = File(...)):
     return {"text": i2t.get_text(file)}
 
 
+@app.get("/audios/{filename}")
+async def get_audio(filename: str):
+    data = b""
+    with open(f"{filename}", "rb") as f:
+        data = f.read()
+
+    return Response(data, media_type="audio/wav")
+
+# image/live
+@app.post("/image/live")
+async def image_to_text_live(image: UploadFile = File(...)):
+    # conver to PIL compatible format
+    file = PIL.Image.open(image.file)
+    text = i2t.get_text(file)
+    audio = t2s.get_audio(text)
+    # save np array to file as wav
+    hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    sf.write(f"{hash}.wav", audio["audio"], audio["sampling_rate"])
+    return {"audio": f'http://localhost:8000/audios/{hash}.wav', "text": text}
+
+
 # /visionsync
 # Video
 # text: bool
@@ -97,8 +122,14 @@ async def visionsync(
     audio: bool | None,
     desc: bool | None,
     video: UploadFile = File(...),
-    time_between_text: int = 10,
+    time_between_text: int = 50,
 ):
+    # read text in output.txt
+    # resp = ""
+    # with open("output.txt", "r") as f:
+    #     resp = f.read()
+    # return Response(content=resp, media_type="application/json")
+
     text = not not text
     audio = not not audio
     desc = not not desc
@@ -107,12 +138,16 @@ async def visionsync(
 
     filename = await save_file(video)
 
+    f = open("output.txt", "w")
+
     scenes = []
 
     def to_json(data):
         json_data = json.dumps(data) + "\n"
-        print(json_data)
+        # print(json_data)/
+        f.write(json_data)
         return json_data.encode("utf-8")  # Encode JSON string to bytes
+
 
     def get_text():
         iterator = v2t.get_text(filename, time_between_text)
@@ -122,10 +157,10 @@ async def visionsync(
     def get_audio(text=None):
         text = text or i2t.get_text(filename)
         audio = t2s.get_audio(text)
-        audio["audio"] = BytesIO(audio["audio"])
-        # to base64
-        audio["audio"] = audio["audio"].read().decode("latin1")
-        return audio
+        # save np array to file as wav
+        hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        sf.write(f"{hash}.wav", audio["audio"], audio["sampling_rate"])
+        return {"audio": f'http://localhost:8000/audios/{hash}.wav'}
 
     def get_desc():
         return {"description": s2t.summarize(scenes)}

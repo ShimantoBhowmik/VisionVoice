@@ -1,13 +1,40 @@
 <div class="live">
-    <p class="label">Live</p>
-    <img src="assets/phone-mountain.webp" />
+  <p class="label" *ngIf="permissionGranted">Live</p>
+  <div class="permission">
+    <video id="video"></video>
+    <p class="label" *ngIf="!permissionGranted">
+      We will need permission to stream your video
+    </p>
+    <button
+      id="button"
+      class="generate-btn"
+      (click)="enableVideo()"
+      *ngIf="!permissionGranted"
+    >
+      ✨ Start Stream
+    </button>
   </div>
-  
-  <div class="sync">
+</div>
+
+<button
+  class="generate-btn m-auto"
+  (click)="toggleDescribeVideo()"
+  *ngIf="permissionGranted"
+>
+  {{ this.descriptionOn ? "Hide" : "Show" }} ✨ Video Description
+</button>
+
+<div class="sync">
+  <!--
+    FOr loop for this.syncs of app-sync
+    description: string = sync.description
+   -->
+  <div *ngFor="let sync of syncs">
     <app-sync
-      timestamp="0:00"
-      description="A person extends their hand for a handshake."
-      audio="assets/handshake.mp3"
-    ></app-sync>
+      timestamp="{{ sync['time'] }}"
+      description="{{ sync['text'] }}"
+      audio="{{ sync['audio'] }}"
+    >
+    </app-sync>
   </div>
-  
+</div>

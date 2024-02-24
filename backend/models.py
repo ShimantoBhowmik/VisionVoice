@@ -58,10 +58,18 @@ class VideoToText:
 
             # convert frame to pil image
             pil_image = Image.fromarray(frame)
+            msec = int(cap.get(cv2.CAP_PROP_POS_MSEC))
 
+            # time = 00h:00m:00s
+            time = f"{msec // 3600000:02}h:{(msec // 60000) % 60:02}m:{(msec // 1000) % 60:02}s"
+
+            # remove leading 00s
+            time = time.replace("00h:", "").replace("00m:", "")
+            
             yield {
                 "text": self.i2t.get_text(pil_image),
-                "time": int(cap.get(cv2.CAP_PROP_POS_MSEC)),
+                # as string
+                "time": time
             }
             frames_to_skip += 1
         cap.release()
@@ -71,9 +79,8 @@ class ScenesToText:
     # "scenes" = Text description of each scene
 
     def __init__(self):
-        self.API_KEY = "AIzaSyDM7F4Ui1Utj7dN3EkV6h-cGj0sfTRNYzQ"
         self.summarization_prompt = """
-        Summarize this scene as a narrative style paragraph where the time key is for which frame (video at 24fps) and text is what was at that frame. Do not just repeat text from the original description. 
+        Summarize the scene of a following paragraph as a narrative style paragraph  . Do not just repeat text from the original description. Do not use the word image. Start with the video describes... . Don't use the terms like we . Use narrative style . Don't use too much comma in sentences.  Max Length: 100 words. The scene is described as follows:
 
             Max Length: 100 words
         """.strip()
@@ -83,6 +90,8 @@ class ScenesToText:
     def summarize(self, scenes: str | list[str]):
         if isinstance(scenes, list):
             scenes = "\n".join(scenes)
+
+        print(self.summarization_prompt + "\n\n" + scenes)
 
         result = genai.generate_text(
             prompt=self.summarization_prompt + "\n\n" + scenes,

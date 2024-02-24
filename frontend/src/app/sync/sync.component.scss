@@ -1,12 +1,16 @@
 .main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: monospace;
-    margin: 1em 0;
-  
-    .timestamp {
-      padding: 1em;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: monospace;
+  margin: 1em 0;
+
+  .timestamp {
+    padding: 1em;
+    width: 10%;
   }
-  
+
+  .description {
+    width: 70%;
+  }
+}

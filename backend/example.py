@@ -1,17 +1,22 @@
+from transformers import pipeline
+from datasets import load_dataset
 import soundfile as sf
-import simpleaudio as sa
 
-from models import TextToSpeech, VideoToText
+import torch
 
+synthesiser = pipeline("text-to-speech", "microsoft/speecht5_tts")
 
-if __name__ == "__main__":
-    v2t = VideoToText()
-    t2s = TextToSpeech()
-    for text in v2t.get_text("example.webm"):
-        print(text)
-        audio = t2s.get_audio(text)
-        # play audio
-        sf.write("audio.wav", audio["audio"], audio["sampling_rate"])
-        wave_obj = sa.WaveObject.from_wave_file("audio.wav")
-        play_obj = wave_obj.play()
-        play_obj.wait_done()  # Wait until sound has finished playing
+embeddings_dataset = load_dataset(
+    "Matthijs/cmu-arctic-xvectors", split="validation"
+)
+speaker_embedding = torch.tensor(embeddings_dataset[7306]["xvector"]).unsqueeze(
+    0
+)
+# You can replace this embedding with your own as well.
+
+speech = synthesiser(
+    "Hello, my dog is cooler than you!",
+    forward_params={"speaker_embeddings": speaker_embedding},
+)
+
+sf.write("speech.wav", speech["audio"], samplerate=speech["sampling_rate"])

@@ -1,29 +1,80 @@
 .live {
-    margin-top: 1em;
-    max-width: 75%;
+  margin-top: 1em;
+  max-width: 75%;
+  margin: auto;
+  position: relative;
+  & > p {
+    position: absolute;
+    background-color: red;
+    top: 1em;
+    border-radius: 1em;
+    left: 1em;
+    color: white;
+    padding: 0.25em 0.5em;
+    margin: 0;
+  }
+
+  img {
+    margin: 0;
+    display: block;
     margin: auto;
-    position: relative;
-    p {
-      position: absolute;
-      background-color: red;
-      top: 1em;
-      border-radius: 40%;
-      left: 1em;
-      color: white;
-      padding: 0.25em 0.5em;
-      margin: 0;
-    }
-  
-    img {
-      margin: 0;
-      display: block;
-      margin: auto;
-      max-width: 100%;
-      border-radius: 25px;
-    }
+    width: 100%;
+    border-radius: 25px;
   }
-  
-  audio {
-    background-color: blue;
-  }
-  
+}
+
+.label {
+  margin: 0;
+  padding: 1em 2em;
+  border-radius: 1em;
+  left: 50%;
+  top: 50%;
+  color: white;
+  transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+  background-color: red;
+}
+
+#button {
+  margin: 0;
+  padding: 1em 2em;
+  border-radius: 1em;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(calc(-50% + 100px));
+  position: absolute;
+}
+
+audio {
+  background-color: blue;
+}
+
+video {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
+
+.m-auto {
+  margin: auto;
+}
+
+/* Generate button */
+.generate-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  display: block;
+}
+
+.generate-btn:hover {
+  background-color: #444;
+}
