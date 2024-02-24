@@ -93,7 +93,7 @@ async def image_to_text(image: UploadFile = File(...)):
 @app.get("/audios/{filename}")
 async def get_audio(filename: str):
     data = b""
-    with open(f"{filename}", "rb") as f:
+    with open(f"temp/{filename}", "rb") as f:
         data = f.read()
 
     return Response(data, media_type="audio/wav")
@@ -107,7 +107,7 @@ async def image_to_text_live(image: UploadFile = File(...)):
     audio = t2s.get_audio(text)
     # save np array to file as wav
     hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
-    sf.write(f"{hash}.wav", audio["audio"], audio["sampling_rate"])
+    sf.write(f"temp/{hash}.wav", audio["audio"], audio["sampling_rate"])
     return {"audio": f'http://localhost:8000/audios/{hash}.wav', "text": text}
 
 
@@ -122,7 +122,7 @@ async def visionsync(
     audio: bool | None,
     desc: bool | None,
     video: UploadFile = File(...),
-    time_between_text: int = 50,
+    time_between_text: int = 60,
 ):
     # read text in output.txt
     # resp = ""
@@ -138,14 +138,12 @@ async def visionsync(
 
     filename = await save_file(video)
 
-    f = open("output.txt", "w")
-
     scenes = []
 
     def to_json(data):
         json_data = json.dumps(data) + "\n"
         # print(json_data)/
-        f.write(json_data)
+        print(json_data)
         return json_data.encode("utf-8")  # Encode JSON string to bytes
 
 
@@ -159,7 +157,7 @@ async def visionsync(
         audio = t2s.get_audio(text)
         # save np array to file as wav
         hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
-        sf.write(f"{hash}.wav", audio["audio"], audio["sampling_rate"])
+        sf.write(f"temp/{hash}.wav", audio["audio"], audio["sampling_rate"])
         return {"audio": f'http://localhost:8000/audios/{hash}.wav'}
 
     def get_desc():

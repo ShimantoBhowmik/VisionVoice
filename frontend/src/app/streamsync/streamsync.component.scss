@@ -51,7 +51,10 @@ audio {
 
 video {
   width: 100%;
-  margin: 0;
+  max-width: 600px;
+  display: block;
+  border-radius: 1em;
+  margin: auto;
   padding: 0;
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
@@ -77,4 +80,9 @@ video {
 
 .generate-btn:hover {
   background-color: #444;
+}
+
+.sync {
+  max-width: 800px;
+  margin: auto;
 }
