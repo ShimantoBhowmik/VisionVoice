@@ -104,11 +104,21 @@ async def image_to_text_live(image: UploadFile = File(...)):
     # conver to PIL compatible format
     file = PIL.Image.open(image.file)
     text = i2t.get_text(file)
+    print(text)
     audio = t2s.get_audio(text)
     # save np array to file as wav
     hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
     sf.write(f"temp/{hash}.wav", audio["audio"], audio["sampling_rate"])
-    return {"audio": f'http://localhost:8000/audios/{hash}.wav', "text": text}
+    print(text)
+    # read audio in to base64 from file then delete file
+    base64_audio = ""
+    with open(f"temp/{hash}.wav", "rb") as f:
+        base64_audio = base64.b64encode(f.read()).decode("utf-8")
+    os.remove(f"temp/{hash}.wav")
+
+    base64_audio = f"data:audio/wav;base64,{base64_audio}"
+
+    return {"audio": base64_audio, "text": text}
 
 
 # /visionsync
@@ -122,7 +132,7 @@ async def visionsync(
     audio: bool | None,
     desc: bool | None,
     video: UploadFile = File(...),
-    time_between_text: int = 60,
+    time_between_text: int = 10,
 ):
     # read text in output.txt
     # resp = ""
@@ -142,8 +152,6 @@ async def visionsync(
 
     def to_json(data):
         json_data = json.dumps(data) + "\n"
-        # print(json_data)/
-        print(json_data)
         return json_data.encode("utf-8")  # Encode JSON string to bytes
 
 
@@ -158,7 +166,12 @@ async def visionsync(
         # save np array to file as wav
         hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
         sf.write(f"temp/{hash}.wav", audio["audio"], audio["sampling_rate"])
-        return {"audio": f'http://localhost:8000/audios/{hash}.wav'}
+        base64_audio = ""
+        with open(f"temp/{hash}.wav", "rb") as f:
+            base64_audio = base64.b64encode(f.read()).decode("utf-8")
+        os.remove(f"temp/{hash}.wav")
+        base64_audio = f"data:audio/wav;base64,{base64_audio}"
+        return {"audio": base64_audio}
 
     def get_desc():
         return {"description": s2t.summarize(scenes)}

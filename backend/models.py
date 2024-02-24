@@ -12,9 +12,13 @@ class ImageToText:
             "image-to-text", model="Salesforce/blip-image-captioning-large"
         )
 
+    def remove_araf(self, text):
+        text = text.split()
+        return " ".join(filter(lambda x: "araf" not in x , text))
+
     def get_text(self, image_path):
         gen = self.pipe(image_path)
-        return str.join("\n", (x["generated_text"] for x in gen))
+        return str.join("\n", (self.remove_araf(x["generated_text"]) for x in gen))
 
 
 class TextToSpeech:
