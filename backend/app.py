@@ -84,3 +84,66 @@ async def image_to_text(image: UploadFile = File(...)):
     # downsample
     file = file.resize((640, 480))
     return {"text": i2t.get_text(file)}
+
+
+# /visionsync
+# Video
+# text: bool
+# audio: bool
+# desc: bool
+@app.post("/visionsync")
+async def visionsync(
+    text: bool | None,
+    audio: bool | None,
+    desc: bool | None,
+    video: UploadFile = File(...),
+    time_between_text: int = 10,
+):
+    text = not not text
+    audio = not not audio
+    desc = not not desc
+    if not (text or audio or desc):
+        return {"error": "Why are you even here?"}
+
+    filename = await save_file(video)
+
+    scenes = []
+
+    def to_json(data):
+        json_data = json.dumps(data) + "\n"
+        print(json_data)
+        return json_data.encode("utf-8")  # Encode JSON string to bytes
+
+    def get_text():
+        iterator = v2t.get_text(filename, time_between_text)
+        for text in iterator:
+            yield text
+
+    def get_audio(text=None):
+        text = text or i2t.get_text(filename)
+        audio = t2s.get_audio(text)
+        audio["audio"] = BytesIO(audio["audio"])
+        # to base64
+        audio["audio"] = audio["audio"].read().decode("latin1")
+        return audio
+
+    def get_desc():
+        return {"description": s2t.summarize(scenes)}
+
+    def stream_response():
+        for chunk in get_text():
+            response = {}
+            if text:
+                response["text"] = chunk
+            if audio:
+                response["audio"] = get_audio(chunk["text"] if text else None)
+            if desc:
+                scenes.append(chunk["text"])
+            if text or audio:
+                yield to_json(response)
+        yield to_json(get_desc())
+
+    return StreamingResponse(
+        stream_response(),
+        media_type="application/json",
+    )
