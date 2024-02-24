@@ -3,10 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { VisionsyncComponent } from './visionsync/visionsync.component';
+import { StreamsyncComponent } from './streamsync/streamsync.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    VisionsyncComponent,
+    StreamsyncComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
