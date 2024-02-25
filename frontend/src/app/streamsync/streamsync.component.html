@@ -10,7 +10,7 @@
       (click)="enableVideo()"
       *ngIf="!permissionGranted"
     >
-      ✨ Start Stream
+    Start Stream ✨
     </button>
   </div>
 </div>
@@ -19,8 +19,9 @@
   class="generate-btn m-auto"
   (click)="toggleDescribeVideo()"
   *ngIf="permissionGranted"
+  [ngStyle]="{'background-color': this.descriptionOn ? 'red' : 'black'}"
 >
-  {{ this.descriptionOn ? "Hide" : "Show" }} ✨ Video Description
+  {{ this.descriptionOn ? "Stop" : "Generate" }} ✨
 </button>
 
 <div class="sync">
