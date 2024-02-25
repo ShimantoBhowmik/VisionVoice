@@ -49,7 +49,6 @@
   align-items: flex-start;
   justify-content: space-around;
   align-items: center;
-  flex-grow: 1;
 }
 
 .offering {
@@ -89,7 +88,11 @@
 
 .superior {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+
+  & > * {
+    width: 50% !important;
+  }
 }
 
 .team-section {
@@ -131,7 +134,7 @@
 }
 
 hr {
-    height: 3px;
-    background-color: rgba(128, 128, 128, 0.5);
-    border: none;
-  }
+  height: 3px;
+  background-color: rgba(128, 128, 128, 0.5);
+  border: none;
+}
