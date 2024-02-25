@@ -138,3 +138,12 @@ hr {
   background-color: rgba(128, 128, 128, 0.5);
   border: none;
 }
+
+a {
+  color: black;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
