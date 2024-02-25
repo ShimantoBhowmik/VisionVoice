@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class VisionsyncComponent {
   file: File | null = null;
   textualDescription: boolean = false;
+  loading = false;
   audioDescription: boolean = false;
   summarization: boolean = false;
 
@@ -47,6 +48,7 @@ export class VisionsyncComponent {
       '&desc=' +
       this.summarization;
 
+    this.loading = true;
     fetch(url, {
       method: 'POST',
       body: formData,
@@ -61,6 +63,7 @@ export class VisionsyncComponent {
         this.syncs = split.map((sync: string) => {
           return JSON.parse(sync);
         });
+        this.loading = false;
       })
       .catch((error) => {
         console.error('Error:', error);

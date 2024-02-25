@@ -81,7 +81,8 @@ export class StreamsyncComponent {
         const r = JSON.parse(JSON.stringify(response));
         r['time'] = `${this.count * 5}s`;
         console.log(r);
-        this.syncs.push(r);
+        // add to front
+        this.syncs.unshift(r);
       },
       (error) => {
         // Handle error

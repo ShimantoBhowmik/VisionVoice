@@ -48,8 +48,13 @@
       </div>
     </div>
 
-    <button (click)="generateVideoDescription()" class="generate-btn">
+    <button
+      (click)="generateVideoDescription()"
+      class="generate-btn"
+      [disabled]="!file || loading"
+    >
       Generate ✨
+      <span *ngIf="loading" class="loader"></span>
     </button>
   </div>
 </div>

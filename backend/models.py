@@ -9,7 +9,8 @@ from transformers import pipeline
 class ImageToText:
     def __init__(self):
         self.pipe = pipeline(
-            "image-to-text", model="Salesforce/blip-image-captioning-large"
+            "image-to-text", model="Salesforce/blip-image-captioning-large",
+            device=0
         )
 
     def remove_araf(self, text):
@@ -23,7 +24,7 @@ class ImageToText:
 
 class TextToSpeech:
     def __init__(self):
-        self.pipe = pipeline("text-to-audio", model="microsoft/speecht5_tts")
+        self.pipe = pipeline("text-to-audio", model="microsoft/speecht5_tts", device=0)
         embeddings_dataset = load_dataset(
             "Matthijs/cmu-arctic-xvectors", split="validation"
         )
@@ -84,9 +85,7 @@ class ScenesToText:
 
     def __init__(self):
         self.summarization_prompt = """
-        Summarize the scene of a following paragraph as a narrative style paragraph  . Do not just repeat text from the original description. Do not use the word image. Start with the video describes... . Don't use the terms like we . Use narrative style . Don't use too much comma in sentences.  Max Length: 100 words. The scene is described as follows:
-
-            Max Length: 100 words
+Describe the scene depicted in the paragraph below using narrative style. Avoid directly quoting the original text and refrain from using the word 'image.' Begin with 'The video portrays...' Maintain a narrative tone, avoiding the use of first-person pronouns. Minimize comma usage. Limit your response to 100 words
         """.strip()
         genai.configure(api_key=self.API_KEY)
         self.model = genai.GenerativeModel("gemini-pro")
@@ -95,7 +94,7 @@ class ScenesToText:
         if isinstance(scenes, list):
             scenes = "\n".join(scenes)
 
-        print(self.summarization_prompt + "\n\n" + scenes)
+        print(self.summarization_prompt + "\n\n" + scenes + "\n\n" + "The summary is:")
 
         result = genai.generate_text(
             prompt=self.summarization_prompt + "\n\n" + scenes,
